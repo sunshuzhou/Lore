@@ -178,8 +178,9 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
     int fail;
     unsigned char mu[LORE_MSG_BYTES]; 
     unsigned char kr[2 * LORE_SYMBYTES];
-    unsigned char buf[LORE_MSG_BYTES + LORE_SYMBYTES];
+    unsigned char buf[2 * LORE_SYMBYTES];
     unsigned char ct_cmp[LORE_CIPHERTEXTBYTES];
+    memset(ct_cmp, 0, sizeof ct_cmp);
     unsigned char ss_invalid[LORE_SYMBYTES];
 
     const unsigned char *sk_indcpa = sk;
@@ -189,9 +190,9 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 
     indcpa_dec(mu, ct, sk_indcpa);
 
-    memcpy(buf, mu, LORE_MSG_BYTES); 
-    memcpy(buf + LORE_MSG_BYTES, pkh, LORE_SYMBYTES);
-    hash_g(kr, buf, LORE_MSG_BYTES + LORE_SYMBYTES);
+    hash_h(buf, mu, LORE_MSG_BYTES);
+    memcpy(buf + LORE_SYMBYTES, pkh, LORE_SYMBYTES);
+    hash_g(kr, buf, 2 * LORE_SYMBYTES);
 
     indcpa_enc(ct_cmp, mu, pk, kr + LORE_SYMBYTES);
 

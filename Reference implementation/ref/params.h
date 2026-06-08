@@ -1,10 +1,11 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
-// Security level for Lore (1, 2, or 3)
+// Security level for Lore (1, 2, 3, or 4)
 // 1: 128-bit security
-// 2: 192-bit security
-// 3: 256-bit security
+// 2: 256-bit security
+// 3: 384-bit security
+// 4: 512-bit security
 #ifndef LORE_LEVEL
     #error "LORE_LEVEL is not defined. Please specify a level during compilation, e.g., -DLORE_LEVEL=1"
 #endif

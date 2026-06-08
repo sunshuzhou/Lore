@@ -449,12 +449,14 @@ void unpack_t_bits(uint8_t *t_indices, const unsigned char *r) {
 /*************************************************
 * Name:        find_closest_r_idx
 *
-* Description: Finds the index of the closest value in the set R = {3i+1}
-* to a given coefficient x_t mod t.
+* Description: Maps a coefficient x_t mod t to the index of the closest value
+* in the rounding set used for CRT compression. For t=4 the set is {0,2}
+* (index 0 -> 0, index 1 -> 2); for t=2 there is a single representative (0),
+* so the index is always 0.
 *
 * Arguments:   - int16_t x_t: the input coefficient
 *
-* Returns:     the index of the closest value in R
+* Returns:     the index of the closest value in the rounding set
 **************************************************/
 int16_t find_closest_r_idx(int16_t x_t) {
     #if LORE_T == 4

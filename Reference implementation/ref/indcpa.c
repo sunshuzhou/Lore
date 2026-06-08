@@ -290,6 +290,14 @@ static void pack_ciphertext_ntt(unsigned char *r, const poly_crt_vec *cu_ntt, co
         ptr[bit_idx / 8] |= (val << (bit_idx % 8));
     }
     ptr += (LORE_N * LORE_T_BITS + 7) / 8;
+
+    /* Zero out any remaining tail bytes so that the fixed-length ciphertext
+       has a deterministic representation (mirrors pack_pk_ntt). This makes the
+       constant-time byte-wise comparison in crypto_kem_dec well-defined. */
+    size_t bytes_written = (size_t)(ptr - r);
+    if (bytes_written < LORE_CIPHERTEXTBYTES) {
+        memset(ptr, 0, LORE_CIPHERTEXTBYTES - bytes_written);
+    }
 }
 
 /*************************************************
